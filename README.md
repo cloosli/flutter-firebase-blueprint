@@ -23,3 +23,8 @@ samples, guidance on mobile development, and a full API reference.
 ```
 flutter pub run flutter_launcher_icons:main
 ```
+
+### Launcher Name
+```
+flutter pub run flutter_launcher_name:main
+```
