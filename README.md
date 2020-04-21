@@ -1,4 +1,4 @@
-# flutterfirebaseblueprint
+# Flutter Firebase Blueprint
 
 A new Flutter Firebase application.
 
@@ -18,20 +18,20 @@ samples, guidance on mobile development, and a full API reference.
 ### 1. Change App ID
 Update the applicationId int app/build.gradle file.
 
-### Get the packages
+### 2. Get the packages
 ```flutter pub get```
 
-### Launcher Icons
+### 3. Launcher Icons
 ```
 flutter pub run flutter_launcher_icons:main
 ```
 
-### Launcher Name
+### 4. Launcher Name
 ```
 flutter pub run flutter_launcher_name:main
 ```
 
-### Installing Firebase
+### 5. Setup Firebase
 Following this guide on firebase.google.com
 [Android](https://firebase.google.com/docs/flutter/setup?platform=android)
 
