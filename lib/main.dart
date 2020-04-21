@@ -1,8 +1,14 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -20,31 +26,56 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(
+        title: 'Flutter Demo Home Page',
+        analytics: analytics,
+        observer: observer,
+      ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  MyHomePage({Key key, this.title, this.analytics, this.observer})
+      : super(key: key);
 
   final String title;
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState(analytics, observer);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  _MyHomePageState(this.analytics, this.observer);
+
+  final FirebaseAnalyticsObserver observer;
+  final FirebaseAnalytics analytics;
+
   int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _testSetCurrentScreen();
+  }
+
+  Future<void> _sendAnalyticsEvent() async {
+    await analytics.logEvent(
+      name: 'test_event',
+      parameters: <String, dynamic>{
+        'counter': _counter,
+      },
+    );
+  }
+
+  Future<void> _testSetCurrentScreen() async {
+    await analytics.setCurrentScreen(
+      screenName: 'My Home Page',
+      screenClassOverride: 'MyHomePage',
+    );
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -54,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      _sendAnalyticsEvent();
     });
   }
 
